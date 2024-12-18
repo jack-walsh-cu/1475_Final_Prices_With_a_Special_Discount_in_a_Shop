@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Stack;
 
 class Solution {
     public static void main(String[] args) {
@@ -7,14 +8,15 @@ class Solution {
     }
 
     public static int[] finalPrices(int[] prices) {
-        int[] answer = prices;
-        for (int i = 0; i < prices.length - 1; i++) {
-            for (int j = i + 1; j < prices.length; j++) {
-                if (prices[j] <= prices[i]) {
-                    answer[i] = prices[i] - prices[j];
-                    break;
-                }
+        int[] answer = prices.clone();
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < prices.length; i++) {
+            while (!stack.isEmpty() && prices[stack.peek()] >= prices[i]) {
+                answer[stack.pop()] -= prices[i];
             }
+            stack.push(i);
         }
         return answer;
     }
